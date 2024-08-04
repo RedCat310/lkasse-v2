@@ -8,16 +8,23 @@ class Cart extends Component {
       pay2: false,
       pay3: false,
       cart: [],
+      price: 0.00,
      }
     componentDidMount() {
       onSnapshot(collection(db, "cart"), () => {
         this.updateList()
       })
     }
+    financial = (x) => {
+      return Number.parseFloat(x).toFixed(2);
+    }
     updateList = async () =>{
       let rawData = await getDocs(collection(db, "cart"))
       let cart = rawData.docs.map((doc) => ({...doc.data()}))
       this.setState({cart: cart})
+      let num = 0
+      cart.forEach((item) => {num = num + (item.price * item.number)})
+      this.setState({price: this.financial(num)})
     }
     deleteItem = (id) =>{
       deleteDoc(doc(db, "cart", id))
@@ -49,7 +56,7 @@ class Cart extends Component {
                 </tbody>
               </table>
               <h2>Zwischensumme:</h2>
-              <h1 id="zws">0.00€</h1>
+              <h1>{this.state.price}€</h1>
               {this.state.pay1 ? <div className="container2" id="pay-div">
                 <input id="cust-input" placeholder="Der Kunde Gab" className="form-control" type="number"/>
                 <br/>
