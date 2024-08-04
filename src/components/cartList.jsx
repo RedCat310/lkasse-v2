@@ -22,7 +22,6 @@ class CartList extends Component {
             if(item.exists()){
                 let newNumber = item.data().number
                 newNumber++
-                console.log(item.data());
                 updateDoc(doc(db, "cart", id), {
                     number: newNumber
                 })

@@ -1,14 +1,47 @@
 import React, { Component } from 'react';
 import { Logout } from './login';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 class Actions extends Component {
-    state = {  } 
+    state = { 
+      addToCart: "",
+    } 
+    
     setAdmin = () =>{
      if(this.props.currentAdmin){
       this.props.setAdmin(false)
      }else{
       this.props.setAdmin(true)
      }
+    }
+
+    addToCart = async() => {
+      let id = this.state.addToCart
+      this.setState({addToCart: ""})
+      if(id){
+        let existingEntry = await getDoc(doc(db, "cart", id))
+        if(existingEntry.exists()){
+          let number = existingEntry.data().number
+          number ++
+          updateDoc(doc(db, "cart", id), { number: number })
+        }else{
+          let product = await getDoc(doc(db, "products", id))
+          if(product.exists()){
+            let productData = product.data()
+            setDoc(doc(db, "cart", id), {
+              id: id,
+              name: productData.name,
+              price: productData.price,
+              number: 1,
+            })
+          }else{
+            alert("Der angegebene Code existiert in der Datenbank nicht.")
+          }
+        }
+      }else{
+        alert("Nichts eingetragen")
+      }
     }
     render() { 
         return          <div className="col">
@@ -20,8 +53,8 @@ class Actions extends Component {
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <div className="input-group flex-nowrap">
-                  <input id="add-input" type="text" className="form-control" placeholder="Code"/>
-                  <button id="add-button" type="button" className="btn btn-primary">Produkt hinzufügen</button>
+                  <input id="add-input" type="text" value={this.state.addToCart} onChange={(e) => this.setState({addToCart: e.target.value})} onKeyDown={(e) => {if (e.key === "Enter") this.addToCart()}} className="form-control" placeholder="Code"/>
+                  <button onClick={() => this.addToCart()} id="add-button" type="button" className="btn btn-primary">Produkt hinzufügen</button>
                   <button className='btn btn-secondary' onClick={this.props.setList}>Von der Liste Hinzufügen</button>
                 </div>
               </li>
@@ -33,12 +66,6 @@ class Actions extends Component {
                 <br/>
                 <span id="price-name"></span><br/>
                 <span id="price-price"></span>
-              </li>
-              <li className="list-group-item">
-                <div className="input-group flex-nowrap">
-                  <input id="remove-input" className="form-control" placeholder="Code" type="text"/>
-                  <button id="remove-button" type="button" className="btn btn-primary">Produkt Stornieren</button>
-                </div>
               </li>
               <li className="list-group-item">
                 <input id="sale-input" className="form-control" type="number"/>

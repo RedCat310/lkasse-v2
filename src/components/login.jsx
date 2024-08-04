@@ -11,7 +11,6 @@ class Login extends Component {
     async componentDidMount(){
         onAuthStateChanged(auth, (user) =>{
             this.props.setUser(user)
-            console.log(user)
         })
     }
     signInEmailPassword = async () => {

@@ -1,11 +1,27 @@
 import React, { Component } from 'react';
+import { db } from '../config/firebase'
+import { collection, deleteDoc, doc, getDocs, onSnapshot } from 'firebase/firestore';
 
 class Cart extends Component {
     state = { 
       pay1: false,
       pay2: false,
       pay3: false,
-     } 
+      cart: [],
+     }
+    componentDidMount() {
+      onSnapshot(collection(db, "cart"), () => {
+        this.updateList()
+      })
+    }
+    updateList = async () =>{
+      let rawData = await getDocs(collection(db, "cart"))
+      let cart = rawData.docs.map((doc) => ({...doc.data()}))
+      this.setState({cart: cart})
+    }
+    deleteItem = (id) =>{
+      deleteDoc(doc(db, "cart", id))
+    }
     render() { 
         return <div className="col">
         <div className="products">
@@ -15,12 +31,21 @@ class Cart extends Component {
               <table id="cart" className="table table-striped">
                 <thead>
                     <tr>
+                        <th>Anzahl</th>
                         <th>Produkt</th>
                         <th>Preis</th>
+                        <th>Aktionen</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                  {this.state.cart.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.number}</td>
+                      <td>{item.name}</td>
+                      <td>{item.price}</td>
+                      <td><button className='btn btn-danger' onClick={() => this.deleteItem(item.id)}>Entfernen</button></td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
               <h2>Zwischensumme:</h2>
