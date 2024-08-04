@@ -20,6 +20,8 @@ class Actions extends Component {
                     price: this.state.newPrice,
                 })
             }
+        }else{
+            alert("Bitte alle felder ausfüllen")
         }
     }
 
@@ -33,10 +35,10 @@ class Actions extends Component {
                     <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                         <div className="input-group flex-nowrap">
-                        <input value={this.state.newName} id="add-input" type="text" className="form-control" placeholder="Name"/>
-                        <input value={this.state.newCode} type="text" className="form-control" placeholder='Code'/>
-                        <input value={this.state.newPrice} type="number" className="form-control" placeholder='Preis'/>
-                        <button id="add-button" type="button" className="btn btn-primary">Produkt hinzufügen</button>
+                        <input value={this.state.newName} onChange={(e) => this.setState({newName: e.target.value})} id="add-input" type="text" className="form-control" placeholder="Name"/>
+                        <input value={this.state.newCode} onChange={(e) => this.setState({newCode: e.target.value})} type="text" className="form-control" placeholder='Code'/>
+                        <input value={this.state.newPrice} onChange={(e) => this.setState({newPrice: e.target.value})} type="number" className="form-control" placeholder='Preis'/>
+                        <button onClick={() => this.addNewProduct()} type="button" className="btn btn-primary">Produkt hinzufügen</button>
                         </div>
                     </li>
                     </ul>
