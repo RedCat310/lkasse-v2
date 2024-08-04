@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { db } from '../../config/firebase';
-import { getDocs, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { getDocs, collection, onSnapshot, deleteDoc, doc } from 'firebase/firestore'
 
 class List extends Component {
     componentDidMount(){

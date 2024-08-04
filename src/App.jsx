@@ -8,7 +8,7 @@ import Admin from './components/admin';
 import CartList from './components/cartList';
 class App extends Component {
     state = { 
-        user: null,
+        user: true,
         admin: false,
         list: false,
      }
