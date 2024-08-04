@@ -19,7 +19,13 @@ class Actions extends Component {
                     name: this.state.newName,
                     price: this.state.newPrice,
                 })
+
             }
+            this.setState({
+                newName: "",
+                newCode: "",
+                newPrice: 0,
+            })
         }else{
             alert("Bitte alle felder ausfüllen")
         }
