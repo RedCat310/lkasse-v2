@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { db } from '../config/firebase'
+import { db } from '../../config/firebase'
 import { collection, deleteDoc, doc, getDocs, onSnapshot } from 'firebase/firestore';
 
 class Cart extends Component {

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {Login} from './components/login';
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import "bootstrap/dist/js/bootstrap.bundle.min";
-import Actions from './components/controls';
-import Cart from './components/cart';
+import Actions from './components/buy/controls';
+import Cart from './components/buy/cart';
 import Admin from './components/admin';
-import CartList from './components/cartList';
+import CartList from './components/buy/cartList';
 class App extends Component {
     state = { 
         user: true,
