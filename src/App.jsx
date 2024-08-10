@@ -6,11 +6,14 @@ import Actions from './components/controls';
 import Cart from './components/cart';
 import Admin from './components/admin';
 import CartList from './components/cartList';
+import Pay from './components/pay';
+
 class App extends Component {
     state = { 
-        user: true,
+        user: false,
         admin: false,
         list: false,
+        pay: false
      }
     setUser = (user) => {
         this.setState({user: user})
@@ -26,11 +29,20 @@ class App extends Component {
         }
         
     }
+    pay = () =>{
+        this.setState({pay: true})
+    }
+    payDone = () =>{
+        this.setState({pay: false})
+    }
     render() { 
         return <div>{this.state.user ? <div className="container text-center">
                 <div className="row">
-                    <Cart></Cart>
-                    <Actions currentAdmin={this.state.admin} setAdmin={this.setAdmin} setList={this.setList}></Actions>
+                    <div className="col">
+                        <Cart></Cart>
+                        {this.state.pay ? <Pay done={this.payDone}></Pay> : null}
+                    </div>
+                    <Actions pay={this.pay} currentAdmin={this.state.admin} setAdmin={this.setAdmin} setList={this.setList}></Actions>
                 </div>
             </div> : <Login setUser={this.setUser}></Login>} 
             {this.state.admin ? <Admin></Admin> : null}

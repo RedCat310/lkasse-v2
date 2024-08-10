@@ -93,8 +93,7 @@ class Actions extends Component {
               </li>
               <li className="list-group-item">
                 <div className="input-group flex-nowrap">
-                  <button id="pay" type="button" className="btn btn-success">Bezahlen</button>
-                  <button id="update" className="btn btn-secondary">Aktualisieren</button>
+                  <button onClick={() => this.props.pay()} type="button" className="btn btn-success">Bezahlen</button>
                   <button className="btn btn-warning" onClick={this.setAdmin}>Admin</button>
                   <Logout>Ausloggen</Logout>
                 </div>
