@@ -36,12 +36,10 @@ class CartList extends Component {
         } catch (error) {
             console.error(error)
         }
+        this.props.close()
     }
     render() { 
-        return <div className="col">
-            <div className="card m-3">
-                <div className="card-header"><h3>Produkte</h3></div>
-                <div className="card-body">
+        return  <div>
                     <table className="table table-striped">
                         <thead>
                             <tr>
@@ -62,9 +60,7 @@ class CartList extends Component {
                             ))}
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>;
+                </div>;
     }
 }
  

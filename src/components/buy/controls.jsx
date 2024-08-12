@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Logout } from '../login';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+import { Modal, Button } from 'react-bootstrap';
+import CartList from './cartList';
 
 class Actions extends Component {
     state = { 
@@ -9,6 +10,7 @@ class Actions extends Component {
       checkCode: "",
       checkName: "",
       checkPrice: "",
+      list: false,
     } 
     
     setAdmin = () =>{
@@ -65,8 +67,24 @@ class Actions extends Component {
         checkCode: ""
       })
     }
+    handleCloseList = () => {
+      this.setState({list: false})
+    }
     render() { 
         return          <div className="col">
+          <Modal scrollable show={this.state.list} onHide={this.handleCloseList} size='xl'>
+                <Modal.Header closeButton>
+                <Modal.Title>Produkte</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <CartList close={this.handleCloseList}></CartList>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleCloseList}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
         <div className="buttons">
           <div className="card m-3">
             <div className="card-header">
@@ -77,7 +95,7 @@ class Actions extends Component {
                 <div className="input-group flex-nowrap">
                   <input type="text" value={this.state.addToCart} onChange={(e) => this.setState({addToCart: e.target.value})} onKeyDown={(e) => {if (e.key === "Enter") this.addToCart()}} className="form-control" placeholder="Code"/>
                   <button onClick={() => this.addToCart()} type="button" className="btn btn-primary">Produkt hinzufügen</button>
-                  <button className='btn btn-secondary' onClick={this.props.setList}>Von der Liste Hinzufügen</button>
+                  <button className='btn btn-secondary' onClick={() => this.setState({list: true})}>Von der Liste Hinzufügen</button>
                 </div>
               </li>
               <li className="list-group-item">
@@ -116,8 +134,6 @@ class Actions extends Component {
               <li className="list-group-item">
                 <div className="input-group flex-nowrap">
                   <button onClick={() => this.props.pay()} type="button" className="btn btn-success">Bezahlen</button>
-                  <button className="btn btn-warning" onClick={this.setAdmin}>Admin</button>
-                  <Logout>Ausloggen</Logout>
                 </div>
               </li>
             </ul>
