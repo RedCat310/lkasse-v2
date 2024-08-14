@@ -86,7 +86,7 @@ class Actions extends Component {
         cart.forEach((item) => {num = num + (item.price * item.number)})
         let saleValue = 0
         if(type){
-           saleValue = (this.financial(num)/100) * this.state.sale
+           saleValue = num / 100 * this.state.sale
            saleValue = saleValue - (saleValue * 2)
 
         }else{
@@ -95,12 +95,13 @@ class Actions extends Component {
         setDoc(doc(db, "cart", "sale"), {
           id: "sale",
           name: "Rabatt",
-          price: saleValue,
+          price: this.financial(saleValue),
           number: 1,
         })
       }else{
-        // error form future 
+        this.error("Bitte etwas eingeben") 
       }
+      this.setState({sale: 0})
     }
     handleCloseError = () =>{
       this.setState({error: false})
