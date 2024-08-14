@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { Modal, Button } from 'react-bootstrap';
 import CartList from './cartList';
@@ -11,6 +11,7 @@ class Actions extends Component {
       checkName: "",
       checkPrice: "",
       list: false,
+      sale: 0,
     } 
     
     setAdmin = () =>{
@@ -67,8 +68,35 @@ class Actions extends Component {
         checkCode: ""
       })
     }
+    financial = (x) => {
+      return Number.parseFloat(x).toFixed(2);
+    }
     handleCloseList = () => {
       this.setState({list: false})
+    }
+    handleSale = async (type) => {
+      if(this.state.sale){
+        let rawData = await getDocs(collection(db, "cart"))
+        let cart = rawData.docs.map((doc) => ({...doc.data()}))
+        let num = 0
+        cart.forEach((item) => {num = num + (item.price * item.number)})
+        let saleValue = 0
+        if(type){
+           saleValue = (this.financial(num)/100) * this.state.sale
+           saleValue = saleValue - (saleValue * 2)
+
+        }else{
+          saleValue = this.state.sale - (this.state.sale * 2)
+        }
+        setDoc(doc(db, "cart", "sale"), {
+          id: "sale",
+          name: "Rabatt",
+          price: saleValue,
+          number: 1,
+        })
+      }else{
+        // error form future 
+      }
     }
     render() { 
         return          <div className="col">
@@ -108,10 +136,10 @@ class Actions extends Component {
                 <span>{this.state.checkPrice}</span>
               </li>
               <li className="list-group-item">
-                <input className="form-control" type="number"/>
+                <input value={this.state.sale} onChange={(e) => this.setState({sale: e.target.value})} className="form-control" type="number"/>
                 <div className="input-group flex-nowrap mt-3">
-                  <button type="button" className="btn btn-primary">Rabatt hinzufügen</button>
-                  <button type="button" className="btn btn-secondary">prozentualen Rabatt hinzufügen</button>
+                  <button onClick={() => this.handleSale(false)} type="button" className="btn btn-primary">Rabatt hinzufügen</button>
+                  <button onClick={() => this.handleSale(true)} type="button" className="btn btn-secondary">prozentualen Rabatt hinzufügen</button>
                 </div>
               </li>
               <li className="list-group-item">
