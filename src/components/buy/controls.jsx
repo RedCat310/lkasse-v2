@@ -11,6 +11,8 @@ class Actions extends Component {
       checkName: "",
       checkPrice: "",
       list: false,
+      error: false,
+      errorText: "",
       sale: 0,
     } 
     
@@ -21,7 +23,6 @@ class Actions extends Component {
       this.props.setAdmin(true)
      }
     }
-
     addToCart = async() => {
       let id = this.state.addToCart
       this.setState({addToCart: ""})
@@ -42,12 +43,15 @@ class Actions extends Component {
               number: 1,
             })
           }else{
-            alert("Der angegebene Code existiert in der Datenbank nicht.")
+            this.error("Der angegebene Code existiert in der Datenbank nicht.")
           }
         }
       }else{
-        alert("Nichts eingetragen")
+        this.error("Nichts eingetragen")
       }
+    }
+    error = (text) =>{
+      this.setState({error: true, errorText: text})
     }
     checkPrice = async () =>{
       if(this.state.checkCode){
@@ -59,10 +63,10 @@ class Actions extends Component {
             checkPrice: product.price,
           })
         }else{
-          alert("Produkt existiert nicht!");
+          this.error("Produkt existiert nicht!");
         }
       }else{
-        alert("Bitte etwas eingeben!")
+        this.error("Bitte etwas eingeben!")
       }
       this.setState({
         checkCode: ""
@@ -98,6 +102,9 @@ class Actions extends Component {
         // error form future 
       }
     }
+    handleCloseError = () =>{
+      this.setState({error: false})
+    }
     render() { 
         return          <div className="col">
           <Modal scrollable show={this.state.list} onHide={this.handleCloseList} size='xl'>
@@ -109,6 +116,19 @@ class Actions extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={this.handleCloseList}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={this.state.error} onHide={this.handleCloseError}>
+                <Modal.Header closeButton>
+                <Modal.Title>Fehler</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {this.state.errorText}
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleCloseError}>
                     Close
                 </Button>
                 </Modal.Footer>
