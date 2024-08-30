@@ -7,22 +7,29 @@ import { Route, Routes, BrowserRouter } from "react-router-dom"
 import NavBar from './components/navbar';
 import Home from './components/home';
 import DataViewer from './components/dataViewer';
+import Screen from './components/screen';
 
 
 
 class App extends Component {
-    state = {    }
+    state = { 
+        screen: false
+     }
+    setScreen = () =>{
+
+    }
     render() { 
-        return <BrowserRouter>
-            <NavBar></NavBar>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/admin" element={<Admin/>} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/verkäufe" element={<DataViewer />} />
-            </Routes>
-            
-        </BrowserRouter>;
+        return <div>
+            {this.state.screen ? <Screen/> :  <BrowserRouter>
+                <NavBar></NavBar>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/admin" element={<Admin/>} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/verkäufe" element={<DataViewer />} />
+                </Routes>
+            </BrowserRouter>}
+        </div>;
         // return <div>{this.state.user ? <div className="container text-center">
         //         <div className="row">
         //             <div className="col">
