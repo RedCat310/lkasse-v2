@@ -24,16 +24,15 @@ class App extends Component {
     }
     render() { 
         return <div>
-            <BrowserRouter>
-                <NavBar screen={this.setScreen}></NavBar>
-                {this.state.screen ? <Screen></Screen> : <Routes>
+            {this.state.screen ? <Screen/> :  <BrowserRouter>
+                <NavBar></NavBar>
+                <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/admin" element={<Admin/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/verkäufe" element={<DataViewer />} />
-                    <Route path='/screen' element={<Screen/>}></Route>
-                </Routes>}
-            </BrowserRouter>
+                </Routes>
+            </BrowserRouter>}
         </div>;
         // return <div>{this.state.user ? <div className="container text-center">
         //         <div className="row">
