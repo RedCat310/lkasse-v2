@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
 import { auth } from '../config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -29,6 +29,10 @@ class NavBar extends Component {
                 <LinkContainer to="/admin">
                     <Nav.Link >Verwalten</Nav.Link>
                 </LinkContainer>
+                {/* <Nav.Link onClick={this.props.screen()}>Als Kundenanzeige verwenden</Nav.Link> */}
+                <Button variant="primary" onClick={() => this.props.screen()}>
+                    Dieses Gerät als Anzeige für Kunden verwenden
+                </Button>
                 <LinkContainer to="/login">
                     <Nav.Link>{this.state.user ? "Konto verwalten" : "Anmelden"}</Nav.Link>
                 </LinkContainer>

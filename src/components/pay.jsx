@@ -86,8 +86,16 @@ class Pay extends Component {
                 this.setState({zws: this.financial(num)})
                 let back = this.state.give - this.financial(num)
                 this.setState({back: this.financial(back), pay2step: true})
+                client.publish("kartengeraet", "open")
             }else{
-                
+                let rawData = await getDocs(collection(db, "cart"))
+                let cart = rawData.docs.map((doc) => ({...doc.data()}))
+                let num = 0
+                cart.forEach((item) => {num = num + (item.price * item.number)})
+                this.setState({zws: this.financial(num)})
+                let back = this.financial(num)
+                this.setState({back: this.financial(back), pay2step: true})
+                client.publish("kartengeraet", "open")
             }
         }else{
             this.setState({pay3: true, pay2step: false, pay2: false})
