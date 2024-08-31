@@ -32,6 +32,10 @@ class Actions extends Component {
           let number = existingEntry.data().number
           number ++
           updateDoc(doc(db, "cart", id), { number: number })
+          let product = await getDoc(doc(db, "products", id))
+          let productData = product.data()
+          let string = number + "x " + productData.name + "  " + productData.price
+          updateDoc(doc(db, "screen", "data"), {text: string})
         }else{
           let product = await getDoc(doc(db, "products", id))
           if(product.exists()){
@@ -42,6 +46,8 @@ class Actions extends Component {
               price: productData.price,
               number: 1,
             })
+            let string = "1x " + productData.name + "  " + productData.price
+            updateDoc(doc(db, "screen", "data"), {text: string})
           }else{
             this.error("Der angegebene Code existiert in der Datenbank nicht.")
           }
@@ -62,6 +68,8 @@ class Actions extends Component {
             checkName: product.name,
             checkPrice: product.price,
           })
+          let string = product.name + " kostet " + product.price
+          updateDoc(doc(db, "screen", "data"), {text: string})
         }else{
           this.error("Produkt existiert nicht!");
         }

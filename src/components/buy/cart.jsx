@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { db } from '../../config/firebase'
-import { collection, deleteDoc, doc, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, onSnapshot, getDoc, updateDoc } from 'firebase/firestore';
 
 class Cart extends Component {
     state = { 
@@ -26,8 +26,12 @@ class Cart extends Component {
       cart.forEach((item) => {num = num + (item.price * item.number)})
       this.setState({price: this.financial(num)})
     }
-    deleteItem = (id) =>{
+    deleteItem = async (id) =>{
       deleteDoc(doc(db, "cart", id))
+      let product = await getDoc(doc(db, "products", id))
+      let productData = product.data()
+      let string = "Glöscht: " + productData.name
+      updateDoc(doc(db, "screen", "data"), {text: string})
     }
     render() { 
         return<div className="products">

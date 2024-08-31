@@ -22,10 +22,29 @@ class App extends Component {
             this.setState({screen: true})
         }
     }
+    toggleFullscreen = () => {
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) { 
+            if (document.documentElement.requestFullscreen) {
+               document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+               document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+               document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+        }
+    }
     render() { 
         return <div>
-            {this.state.screen ? <Screen/> :  <BrowserRouter>
-                <NavBar></NavBar>
+            {this.state.screen ? <Screen screen={this.setScreen}/> :  <BrowserRouter>
+                <NavBar screen={this.setScreen}></NavBar>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/admin" element={<Admin/>} />
@@ -33,6 +52,7 @@ class App extends Component {
                     <Route path="/verkäufe" element={<DataViewer />} />
                 </Routes>
             </BrowserRouter>}
+            <img src="fullscreen.png" alt="ne" style={{width: "50px", position: 'fixed', left: '1px', bottom: '1px'}} onClick={this.toggleFullscreen}/>
         </div>;
         // return <div>{this.state.user ? <div className="container text-center">
         //         <div className="row">

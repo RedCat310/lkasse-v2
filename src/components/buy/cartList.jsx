@@ -25,6 +25,8 @@ class CartList extends Component {
                 updateDoc(doc(db, "cart", id), {
                     number: newNumber
                 })
+                let string = newNumber + "x " + name + "  " + price
+                updateDoc(doc(db, "screen", "data"), {text: string})
             }else{
                 await setDoc(doc(db, "cart", id), {
                     name: name,
@@ -32,6 +34,8 @@ class CartList extends Component {
                     price: price,
                     number: 1
                 })
+                let string = "1x " + name + "  " + price
+                updateDoc(doc(db, "screen", "data"), {text: string})
             }
         } catch (error) {
             console.error(error)

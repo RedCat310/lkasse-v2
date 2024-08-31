@@ -30,12 +30,12 @@ class NavBar extends Component {
                     <Nav.Link >Verwalten</Nav.Link>
                 </LinkContainer>
                 {/* <Nav.Link onClick={this.props.screen()}>Als Kundenanzeige verwenden</Nav.Link> */}
-                <Button variant="primary" onClick={() => this.props.screen()}>
-                    Dieses Gerät als Anzeige für Kunden verwenden
-                </Button>
                 <LinkContainer to="/login">
                     <Nav.Link>{this.state.user ? "Konto verwalten" : "Anmelden"}</Nav.Link>
                 </LinkContainer>
+                <button className='nav-link' variant="primary" onClick={() => this.props.screen()}>
+                    Dieses Gerät als Anzeige für Kunden verwenden
+                </button>
             </Nav>
           </Navbar.Collapse>
         </Container>
